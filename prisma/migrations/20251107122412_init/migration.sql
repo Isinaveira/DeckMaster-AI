@@ -1,0 +1,48 @@
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "name" TEXT,
+    "firebaseUid" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Game" (
+    "id" TEXT NOT NULL,
+    "gameKey" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "Game_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Team" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "pieces" JSONB NOT NULL,
+    "userId" TEXT NOT NULL,
+    "gameId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Team_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_firebaseUid_key" ON "User"("firebaseUid");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Game_gameKey_key" ON "Game"("gameKey");
+
+-- AddForeignKey
+ALTER TABLE "Team" ADD CONSTRAINT "Team_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Team" ADD CONSTRAINT "Team_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

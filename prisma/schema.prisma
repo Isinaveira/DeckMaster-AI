@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output = "../node_modules/@prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String @id @default(cuid()) // Clave primaria de la DB
+  email       String @unique
+  name        String?
+  firebaseUid String @unique
+  teams       Team[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Game{
+  id       String @id @default(cuid())
+  gameKey  String @unique
+  name     String
+  teams    Team[]
+}
+
+model Team {
+  id       String @id @default(cuid())
+  name     String
+  pieces   Json
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  game     Game   @relation(fields: [gameId], references: [id])
+  gameId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+

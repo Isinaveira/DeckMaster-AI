@@ -3,5 +3,12 @@
     {
       "mode": "auto"
     }
+  ],
+  "cSpell.words": [
+    "cuid",
+    "datasource",
+    "postgresql",
+    "redis",
+    "TOON"
   ]
 }
